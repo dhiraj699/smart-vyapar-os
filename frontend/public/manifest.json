@@ -1,0 +1,25 @@
+{
+  "short_name": "SmartVyapar",
+  "name": "Smart Vyapar OS - Micro-Retail POS",
+  "description": "Smart retail POS billing, offline inventory, and udhar ledger",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0f172a",
+  "theme_color": "#15803d",
+  "display": "standalone",
+  "orientation": "any",
+  "scope": "/"
+}

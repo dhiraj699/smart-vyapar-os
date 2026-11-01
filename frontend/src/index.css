@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root { height: 100%; }
+  body { @apply bg-sage-50 font-sans text-ink antialiased; font-variant-numeric: tabular-nums; }
+  :focus-visible { outline: 3px solid #E8A200; outline-offset: 2px; }
+  input[type='number']::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+}
+
+@layer components {
+  .kbd { @apply inline-flex items-center rounded border border-sage-300 bg-white px-1.5 text-[11px] font-semibold leading-5 text-sage-500; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-primary { @apply btn bg-haldi text-ink hover:bg-haldi-dark; }
+  .btn-leaf { @apply btn bg-leaf text-white hover:bg-leaf-dark; }
+  .btn-ghost { @apply btn border border-sage-300 bg-white text-ink hover:bg-sage-100; }
+  .field { @apply w-full rounded-lg border border-sage-300 bg-white px-3 py-2 text-sm placeholder:text-sage-500 focus:border-leaf focus:outline-none; }
+}
+
+@keyframes voice-wave { 0%, 100% { transform: scaleY(0.25); } 50% { transform: scaleY(1); } }
+.voice-bar { transform-origin: center; animation: voice-wave 0.9s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .voice-bar { animation: none; transform: scaleY(0.6); } }
