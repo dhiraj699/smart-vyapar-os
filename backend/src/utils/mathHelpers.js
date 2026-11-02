@@ -171,8 +171,8 @@ export const computeRiskScore = (paymentHistory = [], now = new Date()) => {
 };
 
 /** UPI intent deep link: upi://pay?pa=shop@upi&am=AMOUNT&pn=ShopName */
-export const buildUpiLink = ({ pa = 'shop@upi', pn = 'ShopName', am, tn } = {}) => {
-  const parts = [`pa=${encodeURIComponent(pa || 'shop@upi')}`, `pn=${encodeURIComponent(pn || 'ShopName')}`];
+export const buildUpiLink = ({ pa = 'kraj7860-1@okaxis', pn = 'Raj Kumar', am, tn } = {}) => {
+  const parts = [`pa=${encodeURIComponent(pa || 'kraj7860-1@okaxis')}`, `pn=${encodeURIComponent(pn || 'Raj Kumar')}`];
   if (am !== undefined && am !== null) {
     const val = Number(am);
     if (Number.isFinite(val) && val > 0) {

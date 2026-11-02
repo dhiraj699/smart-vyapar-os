@@ -394,7 +394,7 @@ export const riskFlagFor = (stars, maxOverdueDays) => {
 };
 
 export const upiLinkFor = (amount, note) =>
-  buildUpiLink({ pa: process.env.SHOP_UPI_ID || 'shop@upi', pn: process.env.SHOP_NAME || 'ShopName', am: amount, tn: note });
+  buildUpiLink({ pa: process.env.SHOP_UPI_ID || 'kraj7860-1@okaxis', pn: process.env.SHOP_NAME || 'Raj Kumar (Ansh Electric)', am: amount, tn: note });
 
 /** POST /api/customers/calculate-risk */
 export const calculateRisk = asyncHandler(async (req, res) => {

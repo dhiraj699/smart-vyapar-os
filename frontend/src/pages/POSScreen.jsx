@@ -805,6 +805,28 @@ export default function POSScreen() {
               ))}
             </div>
 
+            {mode === 'UPI' && (
+              <div className="space-y-2 rounded-xl border border-leaf/30 bg-leaf-light/20 p-3 text-center transition-all animate-in fade-in">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-bold uppercase tracking-wider text-leaf">Scan & Pay via UPI</span>
+                  <span className="rounded-full bg-leaf/10 px-2 py-0.5 text-[10px] font-bold text-leaf">GPay · PhonePe · Paytm</span>
+                </div>
+                <div className="flex flex-col items-center justify-center pt-1">
+                  <img
+                    src={SHOP.qrImage || '/merchant-qr.jpg'}
+                    alt="Raj Kumar UPI QR"
+                    className="h-44 w-auto rounded-xl border border-sage-200 bg-white p-1.5 shadow-sm object-contain"
+                  />
+                  <div className="mt-2 text-xs font-bold text-ink">
+                    UPI ID: <span className="font-mono text-leaf">{SHOP.upiId}</span>
+                  </div>
+                  <div className="text-[11px] font-medium text-sage-600">
+                    Payee: <b>{SHOP.name}</b>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {mode === 'Udhar' && (
               <div className="space-y-2 rounded-lg border border-sage-200 bg-sage-50 p-3">
                 <input
@@ -910,8 +932,15 @@ export default function POSScreen() {
 
             {settleUpiLink && (
               <div className="my-3 flex flex-col items-center justify-center rounded-lg bg-sage-50 p-3">
-                <QRCodeSVG value={settleUpiLink} size={110} />
-                <span className="mt-1.5 text-xs text-sage-500">Customer can scan to pay via UPI</span>
+                <img
+                  src={SHOP.qrImage || '/merchant-qr.jpg'}
+                  alt="Merchant UPI QR"
+                  className="h-36 w-auto rounded-lg border border-sage-200 bg-white p-1 object-contain mb-1.5 shadow-xs"
+                />
+                <div className="text-xs font-bold text-ink">
+                  UPI ID: <span className="font-mono text-leaf">{SHOP.upiId}</span>
+                </div>
+                <span className="mt-0.5 text-[11px] text-sage-500">Customer can scan to pay via UPI (GPay/PhonePe/Paytm)</span>
               </div>
             )}
 

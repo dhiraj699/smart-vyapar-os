@@ -5,8 +5,8 @@ import { SHOP } from './config.js';
  * Format: upi://pay?pa={MERCHANT_VPA}&pn={SHOP_NAME}&am={BILL_TOTAL}&cu=INR&tn=Invoice_{BILL_NUMBER}
  */
 export const buildUpiLink = ({ pa, pn, am, tn }) => {
-  const merchantVpa = (pa || SHOP.upiId || 'merchant@upi').trim();
-  const merchantName = (pn || SHOP.name || 'Merchant').trim();
+  const merchantVpa = (pa || SHOP.upiId || 'kraj7860-1@okaxis').trim();
+  const merchantName = (pn || SHOP.name || 'Raj Kumar').trim();
   const billTotal = Number(am || 0).toFixed(2);
   const rawNote = String(tn || 'Bill').trim();
   const note = rawNote.startsWith('Invoice_') ? rawNote : `Invoice_${rawNote}`;

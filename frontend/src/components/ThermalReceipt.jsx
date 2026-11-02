@@ -196,10 +196,10 @@ const ThermalReceipt = forwardRef(function ThermalReceipt({ sale, shop = SHOP, w
             </div>
           </div>
           <div className="c b" style={{ fontSize: narrow ? '8.5px' : '9.5px' }}>
-            UPI ID: {shop?.upiId || 'merchant@upi'}
+            UPI ID: {shop?.upiId || 'kraj7860-1@okaxis'}
           </div>
           <div className="c" style={{ fontSize: narrow ? '8px' : '9px', color: '#111' }}>
-            Payee: {shop?.name || 'STORE OWNER'}
+            Payee: {shop?.name || 'RAJ KUMAR'}
           </div>
           <div className="c" style={{ fontSize: narrow ? '7.5px' : '8.5px', color: '#333' }}>
             (GPay, PhonePe, Paytm, BHIM)
