@@ -99,6 +99,20 @@ const DB_STATES = ['disconnected', 'connected', 'connecting', 'disconnecting'];
 /**
  * Dedicated production health-check endpoint
  */
+app.get(['/', '/healthz'], (_req, res) => {
+  const readyState = mongoose.connection.readyState;
+  const dbUp = readyState === 1;
+  res.status(200).json({
+    success: true,
+    service: 'Smart Vyapar OS API',
+    status: dbUp ? 'online' : 'degraded',
+    version: '1.2.0',
+    db: DB_STATES[readyState] || 'unknown',
+    health: '/api/health',
+    timestamp: new Date().toISOString(),
+  });
+});
+
 app.get('/api/health', (_req, res) => {
   const readyState = mongoose.connection.readyState;
   const dbUp = readyState === 1;

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vyapar-os-v1';
+const CACHE_NAME = 'vyapar-os-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -32,33 +32,34 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // For API calls: Network-first
-  if (url.pathname.startsWith('/api')) {
+  // 1. Direct Network Bypass:
+  // Non-GET requests (POST, PUT, DELETE), backend API calls (/api), or external Render backend
+  if (
+    request.method !== 'GET' ||
+    url.pathname.startsWith('/api') ||
+    url.hostname.includes('onrender.com') ||
+    url.protocol.startsWith('chrome-extension')
+  ) {
+    return; // Pass through directly to network
+  }
+
+  // 2. SPA Navigation: For HTML page navigations (/login, /pos, etc.)
+  if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request).catch(() => {
-        // Return a JSON offline error payload if network is down
-        return new Response(
-          JSON.stringify({
-            success: false,
-            offline: true,
-            message: 'Network offline. Using local Vyapar offline storage.',
-          }),
-          {
-            status: 503,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
+      fetch(request).catch(async () => {
+        const cached = await caches.match('/index.html');
+        return cached || new Response('Offline', { status: 503, statusText: 'Offline' });
       })
     );
     return;
   }
 
-  // For static app assets: Stale-While-Revalidate
+  // 3. Static assets: Stale-While-Revalidate with safe Response fallback
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
+    caches.match(request).then(async (cachedResponse) => {
       const fetchPromise = fetch(request)
         .then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200 && request.method === 'GET') {
+          if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
             const responseClone = networkResponse.clone();
             caches.open(CACHE_NAME).then((cache) => {
               cache.put(request, responseClone);
@@ -68,7 +69,14 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => cachedResponse);
 
-      return cachedResponse || fetchPromise;
+      const response = cachedResponse || (await fetchPromise);
+      return (
+        response ||
+        new Response('Asset not found', {
+          status: 404,
+          statusText: 'Not Found',
+        })
+      );
     })
   );
 });

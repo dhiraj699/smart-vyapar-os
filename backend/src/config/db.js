@@ -73,8 +73,9 @@ export const connectDB = async () => {
     return connectingPromise;
   }
 
+  const isProd = process.env.NODE_ENV === 'production';
   const primaryUri = process.env.MONGODB_URI;
-  const fallbackUri = process.env.MONGODB_FALLBACK_URI || 'mongodb://127.0.0.1:27017/smart_vyapar';
+  const fallbackUri = process.env.MONGODB_FALLBACK_URI || (isProd ? null : 'mongodb://127.0.0.1:27017/smart_vyapar');
 
   if (!primaryUri && !fallbackUri) {
     throw new Error('MONGODB_URI is not defined. Copy .env.example to .env and set it.');
