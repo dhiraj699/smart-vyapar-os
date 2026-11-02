@@ -45,10 +45,19 @@ export const login = asyncHandler(async (req, res) => {
   const password = body.password;
 
   // Search by username or phone
-  const user = await User.findOne({
+  let user = await User.findOne({
     $or: [{ username: idKey.toLowerCase() }, { phone: idKey }],
     active: true,
   }).populate('dealerId', 'name agencyName phone pendingBalance categories');
+
+  // Auto-provision default accounts on-demand if database was newly connected
+  if (!user && ['admin', 'staff', 'dealer'].includes(idKey.toLowerCase())) {
+    await ensureDefaultAccounts();
+    user = await User.findOne({
+      $or: [{ username: idKey.toLowerCase() }, { phone: idKey }],
+      active: true,
+    }).populate('dealerId', 'name agencyName phone pendingBalance categories');
+  }
 
   if (!user) {
     throw new ApiError(401, 'Invalid username/phone or password');

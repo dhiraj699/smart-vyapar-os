@@ -5,6 +5,7 @@ import Dealer from './models/Dealer.js';
 import Product from './models/Product.js';
 import Customer from './models/Customer.js';
 import PriceAlert from './models/PriceAlert.js';
+import User from './models/User.js';
 import logger from './utils/logger.js';
 
 const day = 86_400_000;
@@ -65,7 +66,26 @@ const run = async () => {
       reason: 'Low arrivals in Maharashtra mandis', reasonTags: ['Mandi Supply Shortage'], estimatedOrderQty: 40 },
   ]);
 
-  logger.info('Seed complete: 3 dealers, 9 products (2 dead-stock, several low-stock), 3 customers, 3 price alerts');
+  // Seed user accounts strictly from environment variables (.env)
+  const adminPass = process.env.ADMIN_PASSWORD;
+  const staffPass = process.env.STAFF_PASSWORD;
+  const dealerPass = process.env.DEALER_PASSWORD;
+
+  if (adminPass && staffPass && dealerPass) {
+    const adminUser = (process.env.ADMIN_USERNAME || 'admin').trim().toLowerCase();
+    const staffUser = (process.env.STAFF_USERNAME || 'staff').trim().toLowerCase();
+    const dealerUser = (process.env.DEALER_USERNAME || 'dealer').trim().toLowerCase();
+
+    await User.deleteMany({ username: { $in: [adminUser, staffUser, dealerUser] } });
+    await User.create([
+      { name: process.env.ADMIN_NAME || 'Store Owner', username: adminUser, password: adminPass, role: 'admin', phone: process.env.ADMIN_PHONE || '9876543210' },
+      { name: process.env.STAFF_NAME || 'Counter Cashier', username: staffUser, password: staffPass, role: 'staff', phone: process.env.STAFF_PHONE || '9876543211' },
+      { name: process.env.DEALER_NAME || 'Vendor Partner', username: dealerUser, password: dealerPass, role: 'dealer', phone: process.env.DEALER_PHONE || '9876543212', dealerId: ram._id },
+    ]);
+    logger.info('Seed complete: users (from .env), 3 dealers, 9 products, 3 customers, 3 price alerts');
+  } else {
+    logger.info('Seed complete: 3 dealers, 9 products, 3 customers, 3 price alerts');
+  }
 };
 
 run()
